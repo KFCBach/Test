@@ -1,0 +1,441 @@
+{
+  "version": "1.0",
+  "productName": "FM26 Squad Analysis",
+  "productPurpose": "A squad analysis tool that translates Football Manager attributes into football-facing style lenses without recommending formations.",
+  "principles": {
+    "footballFirst": true,
+    "formationRecommendations": false,
+    "showAllPlayersPerLens": true,
+    "excludeGoalkeepersFromOutfieldLenses": true,
+    "usePositionAsSoftContextOnly": true
+  },
+  "scoreModel": {
+    "coreWeight": 0.6,
+    "supportWeight": 0.25,
+    "accentWeight": 0.15,
+    "gateCaps": [
+      {
+        "ifGateAverageBelow": 11.0,
+        "scoreMax": 11.5
+      },
+      {
+        "ifGateAverageBelow": 12.0,
+        "scoreMax": 13.0
+      },
+      {
+        "ifGateAverageBelow": 13.0,
+        "scoreMax": 14.5
+      }
+    ],
+    "bands": {
+      "strongFit": 14.5,
+      "goodFit": 13.0,
+      "workingOption": 11.5
+    }
+  },
+  "toplineMetrics": [
+    "Team Average",
+    "Best Fit",
+    "Weakest Fit",
+    "Strong Fit Count",
+    "Limiting Attribute",
+    "Carry Attribute"
+  ],
+  "lenses": [
+    {
+      "id": "pressing_capacity",
+      "label": "High Pressing Capacity",
+      "shortMeaning": "How ready the squad is to press, counter-press and sustain repeated regain actions.",
+      "description": "High scores suggest the squad can press high, force rushed decisions and repeat pressure actions without losing compactness. Lower scores suggest the press may look active, but arrive late, open gaps or fade over time.",
+      "coachQuestions": [
+        "Can the team lock opponents high?",
+        "Can the press be repeated without losing structure?"
+      ],
+      "core": {
+        "Work Rate": 1.15,
+        "Teamwork": 1.1,
+        "Aggression": 1.0,
+        "Stamina": 1.1,
+        "Decisions": 1.0,
+        "Anticipation": 1.0
+      },
+      "support": {
+        "Acceleration": 0.8,
+        "Pace": 0.75,
+        "Concentration": 0.7,
+        "Tackling": 0.6,
+        "Determination": 0.55
+      },
+      "accent": {
+        "Natural Fitness": 0.45,
+        "Balance": 0.35,
+        "Strength": 0.35,
+        "Bravery": 0.3
+      },
+      "gateAttributes": [
+        "Work Rate",
+        "Teamwork",
+        "Decisions",
+        "Anticipation"
+      ]
+    },
+    {
+      "id": "line_height_control",
+      "label": "High Line Control",
+      "shortMeaning": "How safely the team can defend with space behind the back line.",
+      "description": "High scores suggest the defensive line can hold a high position, compress the pitch, time the line together and recover when opponents attack the space behind. Lower scores suggest the team may be exposed by runs in behind, direct balls or poor offside-line timing.",
+      "coachQuestions": [
+        "Can the team hold a high defensive line?",
+        "Can the back line time the offside line and recover?"
+      ],
+      "core": {
+        "Acceleration": 1.05,
+        "Pace": 1.05,
+        "Anticipation": 1.0,
+        "Positioning": 1.0,
+        "Decisions": 0.95,
+        "Concentration": 0.95,
+        "Teamwork": 0.9
+      },
+      "support": {
+        "Agility": 0.65,
+        "Stamina": 0.55,
+        "Balance": 0.5
+      },
+      "accent": {
+        "Marking": 0.35,
+        "Composure": 0.35,
+        "Bravery": 0.3
+      },
+      "gateAttributes": [
+        "Acceleration",
+        "Pace",
+        "Anticipation",
+        "Positioning",
+        "Concentration",
+        "Teamwork"
+      ]
+    },
+    {
+      "id": "box_defence",
+      "label": "Low block: defend the box",
+      "shortMeaning": "Can the player defend deep around the penalty area when the team absorbs pressure?",
+      "description": "High scores point to players who can hold position, track danger early, defend crosses and survive long spells around their own box. Lower scores suggest the player may struggle when the team has to defend deep, deal with runners and manage repeated penalty-area pressure.",
+      "coachQuestions": [
+        "How safe is the team when defending the area?",
+        "Can the squad absorb pressure around its own goal?"
+      ],
+      "core": {
+        "Positioning": 1.0,
+        "Marking": 1.0,
+        "Concentration": 0.95,
+        "Anticipation": 0.95,
+        "Heading": 0.9,
+        "Jumping Reach": 0.9,
+        "Bravery": 0.8
+      },
+      "support": {
+        "Tackling": 0.75,
+        "Strength": 0.75,
+        "Decisions": 0.65,
+        "Teamwork": 0.55
+      },
+      "accent": {
+        "Balance": 0.35,
+        "Aggression": 0.3,
+        "Stamina": 0.25,
+        "Determination": 0.2
+      },
+      "gateAttributes": [
+        "Positioning",
+        "Marking",
+        "Concentration",
+        "Anticipation"
+      ]
+    },
+    {
+      "id": "ball_retention",
+      "label": "Possession Control",
+      "shortMeaning": "Can the squad keep the ball under pressure, circulate with purpose, control rhythm and avoid cheap turnovers?",
+      "description": "High scores suggest the squad can keep the ball under pressure, circulate with purpose and control the rhythm of the game. Lower scores suggest rushed touches, poor support angles and preventable turnovers.",
+      "coachQuestions": [
+        "Can the team keep the ball under pressure?",
+        "Can the squad control rhythm and avoid cheap turnovers?"
+      ],
+      "core": {
+        "First Touch": 1.05,
+        "Passing": 1.0,
+        "Technique": 1.0,
+        "Composure": 0.95,
+        "Decisions": 0.9,
+        "Teamwork": 0.9,
+        "Vision": 0.85
+      },
+      "support": {
+        "Balance": 0.5,
+        "Concentration": 0.45,
+        "Anticipation": 0.4
+      },
+      "accent": {
+        "Agility": 0.35,
+        "Dribbling": 0.3
+      },
+      "gateAttributes": [
+        "First Touch",
+        "Passing",
+        "Composure",
+        "Teamwork",
+        "Vision"
+      ]
+    },
+    {
+      "id": "vertical_progression",
+      "label": "Direct Progression",
+      "shortMeaning": "Can the squad turn regains or early openings into forward attacks quickly, before the opponent reorganises?",
+      "description": "High scores point to players who can turn regains or early openings into forward attacks quickly. Lower scores suggest the team may recycle safely, slow the attack down or fail to attack space before the opponent reorganises.",
+      "coachQuestions": [
+        "Can the team attack forward quickly?",
+        "Can the squad turn regains into threat?"
+      ],
+      "core": {
+        "Decisions": 1.0,
+        "Vision": 1.0,
+        "Passing": 0.95,
+        "First Touch": 0.9,
+        "Technique": 0.85,
+        "Off The Ball": 0.85
+      },
+      "support": {
+        "Acceleration": 0.6,
+        "Pace": 0.55,
+        "Dribbling": 0.5,
+        "Teamwork": 0.45
+      },
+      "accent": {
+        "Flair": 0.35,
+        "Balance": 0.3,
+        "Anticipation": 0.3,
+        "Composure": 0.3
+      },
+      "gateAttributes": [
+        "Decisions",
+        "Vision",
+        "Passing",
+        "First Touch",
+        "Off The Ball"
+      ]
+    },
+    {
+      "id": "one_v_one_threat",
+      "label": "1v1 Threat",
+      "shortMeaning": "Can the player create imbalance by beating a defender, carrying the ball into dangerous areas and forcing the opponent to adjust, double up or lose structure?",
+      "description": "High scores point to players who can beat defenders, carry the ball into dangerous areas and force the opponent to adjust or double up. Lower scores suggest the squad may rely more on combinations than individual elimination.",
+      "coachQuestions": [
+        "Who can beat a defender and create separation?",
+        "Does the squad have enough individual destabilising power?"
+      ],
+      "core": {
+        "Dribbling": 1.1,
+        "Acceleration": 1.0,
+        "Agility": 0.95,
+        "Balance": 0.9,
+        "Technique": 0.9
+      },
+      "support": {
+        "Decisions": 0.7,
+        "Flair": 0.65,
+        "First Touch": 0.55,
+        "Pace": 0.5,
+        "Off The Ball": 0.45
+      },
+      "accent": {
+        "Composure": 0.3,
+        "Anticipation": 0.25,
+        "Strength": 0.25
+      },
+      "gateAttributes": [
+        "Dribbling",
+        "Acceleration",
+        "Technique"
+      ]
+    },
+    {
+      "id": "running_threat",
+      "label": "Final Third Creation",
+      "shortMeaning": "Can the player create chances in the final third through vision, passing quality, combinations, crosses or individual creativity?",
+      "description": "High scores point to players who can create chances in the final third through vision, passing quality, combinations, crosses or individual creativity. Lower scores suggest the squad may reach advanced areas but lack the final action to open opponents.",
+      "coachQuestions": [
+        "Who can create chances in the final third?",
+        "Does the squad have enough final-ball quality?"
+      ],
+      "core": {
+        "Vision": 1.0,
+        "Passing": 1.0,
+        "Technique": 0.95,
+        "Decisions": 0.95,
+        "Flair": 0.9,
+        "First Touch": 0.85
+      },
+      "support": {
+        "Crossing": 0.7,
+        "Dribbling": 0.55,
+        "Off The Ball": 0.5,
+        "Composure": 0.45,
+        "Teamwork": 0.45
+      },
+      "accent": {
+        "Anticipation": 0.3,
+        "Long Shots": 0.3,
+        "Corners": 0.25,
+        "Free Kick Taking": 0.25
+      },
+      "gateAttributes": [
+        "Vision",
+        "Passing",
+        "Technique",
+        "Decisions",
+        "First Touch"
+      ]
+    },
+    {
+      "id": "penalty_area_presence",
+      "label": "Penalty-Area Goal Threat",
+      "shortMeaning": "Can the player arrive in dangerous areas, read chances early and turn box entries into shots and goals?",
+      "description": "High scores point to players who can arrive in the right areas, read chances early and turn box entries into shots and goals. Lower scores suggest the team may reach dangerous zones without enough finishing threat.",
+      "coachQuestions": [
+        "Who turns box entries into goals?",
+        "Does the squad have enough penalty-area goal threat?"
+      ],
+      "core": {
+        "Finishing": 1.1,
+        "Off The Ball": 1.0,
+        "Anticipation": 0.95,
+        "Composure": 0.9,
+        "First Touch": 0.85,
+        "Decisions": 0.85
+      },
+      "support": {
+        "Heading": 0.7,
+        "Jumping Reach": 0.65,
+        "Acceleration": 0.55,
+        "Strength": 0.55,
+        "Balance": 0.5,
+        "Technique": 0.45
+      },
+      "accent": {
+        "Bravery": 0.3,
+        "Pace": 0.25,
+        "Teamwork": 0.25,
+        "Determination": 0.2
+      },
+      "gateAttributes": [
+        "Finishing",
+        "Off The Ball",
+        "Anticipation",
+        "Composure",
+        "First Touch"
+      ]
+    },
+    {
+      "id": "final_third_craft",
+      "label": "Transition Security",
+      "shortMeaning": "Can the player protect the team after possession is lost, stop counters early and keep the centre secure?",
+      "description": "High scores point to players who can protect the team after possession is lost, stop counters early and keep the centre secure. Lower scores suggest the team may attack well but become exposed when the ball turns over.",
+      "coachQuestions": [
+        "Who protects the team after ball loss?",
+        "Can the squad stop counters before they become dangerous?"
+      ],
+      "core": {
+        "Positioning": 1.0,
+        "Anticipation": 1.0,
+        "Decisions": 0.95,
+        "Tackling": 0.95,
+        "Work Rate": 0.9,
+        "Teamwork": 0.9,
+        "Concentration": 0.9
+      },
+      "support": {
+        "Aggression": 0.65,
+        "Stamina": 0.6,
+        "Strength": 0.55,
+        "Acceleration": 0.5,
+        "Marking": 0.45,
+        "Bravery": 0.4,
+        "Determination": 0.35
+      },
+      "accent": {
+        "Pace": 0.3,
+        "Balance": 0.3,
+        "Composure": 0.25,
+        "Passing": 0.25
+      },
+      "gateAttributes": [
+        "Positioning",
+        "Anticipation",
+        "Decisions",
+        "Tackling",
+        "Concentration",
+        "Teamwork"
+      ]
+    },
+    {
+      "id": "no6_profile",
+      "label": "No. 6 Profile",
+      "shortMeaning": "Who can anchor play centrally, protect the line in front and keep the team connected on the ball.",
+      "description": "High scores point to players who can receive under pressure, hold central balance and make good choices from the base of midfield. Lower scores suggest the central platform may need to be shared rather than placed on one player.",
+      "coachQuestions": [
+        "Do we have a real single-anchor profile?",
+        "Is central security strong enough to rely on one controller?"
+      ],
+      "core": {
+        "Positioning": 1.05,
+        "Anticipation": 1.0,
+        "Decisions": 1.0,
+        "Composure": 0.95,
+        "Passing": 0.9,
+        "First Touch": 0.85
+      },
+      "support": {
+        "Teamwork": 0.65,
+        "Tackling": 0.6,
+        "Concentration": 0.55,
+        "Balance": 0.5
+      },
+      "accent": {
+        "Vision": 0.35,
+        "Strength": 0.35,
+        "Technique": 0.3,
+        "Stamina": 0.25
+      },
+      "gateAttributes": [
+        "Positioning",
+        "Decisions",
+        "Passing",
+        "Composure"
+      ],
+      "depthRules": [
+        {
+          "minimumStrongFits": 2,
+          "reading": "Single-anchor structure has real depth."
+        },
+        {
+          "minimumStrongFits": 1,
+          "reading": "Single-anchor structure is possible but fragile."
+        },
+        {
+          "minimumStrongFits": 0,
+          "reading": "Central load should be shared more than anchored."
+        }
+      ]
+    }
+  ],
+  "contextOnlyAttributes": [
+    "Leadership",
+    "Determination"
+  ],
+  "notes": [
+    "Leadership and Determination matter in squad building, but they should not drive the style-lens score itself.",
+    "Set-piece attributes can appear as accents, not as core style drivers.",
+    "Each lens should show all outfield players ranked on the relevant attributes for that single lens."
+  ]
+}
