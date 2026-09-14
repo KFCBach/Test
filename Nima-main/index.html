@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FM26 Squad Analysis</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <input id="csvInput" class="visually-hidden" type="file" accept=".csv,text/csv" />
+
+      <section class="band sticky-app-bar" id="stickyAppBar">
+        <div class="sticky-app-main">
+          <div class="sticky-app-brand">
+            <span class="pill pill-accent">FM26 Squad Analysis</span>
+            <span class="pill" id="playerCountPill">0 players</span>
+            <span class="pill" id="dataSourcePill">No squad loaded</span>
+            <span class="pill hidden-view" id="activeSituationPill">Active: none</span>
+          </div>
+          <div class="sticky-app-actions">
+            <button class="btn btn-primary" id="stickyUploadBtn" type="button">Upload squad CSV</button>
+            <button class="btn btn-secondary" id="sampleBtn" type="button">Try sample squad</button>
+            <button class="btn btn-tertiary" id="manualEntryBtn" type="button">Enter manually</button>
+            <button class="btn btn-tertiary" id="exportBtn" type="button">Download current squad</button>
+          </div>
+        </div>
+        <div class="sticky-app-nav">
+          <div class="anchor-group">
+            <button class="anchor-btn" id="jumpToSituationsBtn" type="button">Match situations</button>
+            <button class="anchor-btn" id="jumpToAnalysisBtn" type="button">Current analysis</button>
+            <button class="anchor-btn" id="jumpToRankingBtn" type="button">Best squad fits</button>
+          </div>
+          <div id="statusMessage" class="status-pill status-neutral">Loading analysis models</div>
+        </div>
+      </section>
+
+      <header class="band topbar">
+        <div class="brand-block">
+          <h1>Turn FM attributes into football decisions.</h1>
+          <p class="lede">
+            Upload your squad, choose a match situation and see who fits, who struggles and where your
+            tactic may be exposed.
+          </p>
+          <div class="hero-process">
+            <span class="hero-step"><strong>1</strong> Upload squad</span>
+            <span class="hero-arrow">&rarr;</span>
+            <span class="hero-step"><strong>2</strong> Choose situation</span>
+            <span class="hero-arrow">&rarr;</span>
+            <span class="hero-step"><strong>3</strong> Analyse fit</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="band empty-state-band hidden-view" id="emptyStateSection">
+        <div class="empty-state empty-state-centered">
+          <div class="empty-state-copy">
+            <h2>Load a squad to start analysing</h2>
+            <p>Upload a Football Manager CSV, use the sample squad or enter players manually.</p>
+          </div>
+          <div class="empty-state-actions">
+            <button class="btn btn-primary" id="emptyUploadBtn" type="button">Upload squad CSV</button>
+            <button class="btn btn-secondary" id="emptySampleBtn" type="button">Try sample squad</button>
+            <button class="btn btn-tertiary" id="emptyManualBtn" type="button">Enter manually</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="band overview-intro" id="introOverviewSection">
+        <div class="overview-head compact-overview-head">
+          <div>
+            <h2>Start with the football problem you want to solve</h2>
+            <p>Choose one situation instead of scanning the full attribute wall.</p>
+          </div>
+        </div>
+
+        <div class="overview-steps">
+          <article class="overview-card">
+            <div class="overview-index">1</div>
+            <h3>Load your squad</h3>
+            <p>Upload a CSV or bring in a few players manually.</p>
+          </article>
+          <article class="overview-card">
+            <div class="overview-index">2</div>
+            <h3>Choose a match situation</h3>
+            <p>Pick the football demand you want to test.</p>
+          </article>
+          <article class="overview-card">
+            <div class="overview-index">3</div>
+            <h3>Analyse fit</h3>
+            <p>See who fits, who struggles and where you are exposed.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-grid" id="pageGrid">
+        <div class="main-column">
+          <section class="band" id="lensDirectorySection">
+            <div class="section-head">
+              <div>
+                <h2>Choose what you want to test</h2>
+                <p>Start with the football problem you want to solve. Each situation shows which players fit the demand.</p>
+              </div>
+            </div>
+            <div class="directory-toolbar">
+              <div class="legend-block">
+                <span>Open one situation to see the relevant attributes, strongest profiles, weakest fits and tactical risks.</span>
+              </div>
+              <input
+                id="searchInput"
+                class="search-input directory-search"
+                type="search"
+                placeholder="Search player or position"
+                autocomplete="off"
+              />
+            </div>
+            <div id="lensGrid" class="lens-grid"></div>
+          </section>
+
+          <section class="band detail-band" id="detailSection">
+            <div id="detailHeader"></div>
+            <div id="kpiGrid" class="kpi-grid"></div>
+            <div id="insightRow" class="insight-row"></div>
+            <div id="topFitsSection" class="top-fits-section"></div>
+            <div id="detailContextRow" class="detail-context-row"></div>
+          </section>
+
+          <section class="band" id="rankingSection">
+            <div class="section-head section-head-tight">
+              <div>
+                <h2>Best squad fits</h2>
+                <p>Players are ranked by how well their FM attributes match this football demand.</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="rankingTable"></table>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side-column hidden-view" id="sideColumn">
+          <section class="band side-panel">
+            <div class="section-head section-head-tight">
+              <div>
+                <h2>Player fit in this situation</h2>
+                <p>See why this player fits, struggles, or creates risk in the selected match situation.</p>
+              </div>
+            </div>
+            <div id="selectedPlayerPanel"></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="manualModal" aria-hidden="true">
+      <section class="band modal-panel" aria-labelledby="manualModalTitle">
+        <div class="modal-head">
+          <div>
+            <h2 id="manualModalTitle">Enter player manually</h2>
+            <p>Add one outfield player with a full attribute profile.</p>
+          </div>
+          <button class="icon-btn" id="closeManualModal" type="button" aria-label="Close manual entry">
+            Close
+          </button>
+        </div>
+        <form id="manualForm" class="manual-form">
+          <div class="identity-grid">
+            <label class="field">
+              <span>Name</span>
+              <input name="Name" type="text" required />
+            </label>
+            <label class="field">
+              <span>Position</span>
+              <input name="Position" type="text" placeholder="D (C), AM (R), ST (C)" />
+            </label>
+            <label class="field">
+              <span>Age</span>
+              <input name="Age" type="number" min="15" max="45" />
+            </label>
+          </div>
+          <div id="manualGroups" class="manual-groups"></div>
+          <div class="modal-actions">
+            <button class="btn" id="cancelManualEntry" type="button">Cancel</button>
+            <button class="btn btn-primary" type="submit">Add player to squad</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
