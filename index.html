@@ -27,6 +27,7 @@
         </div>
         <div class="sticky-app-nav">
           <div class="anchor-group">
+            <button class="anchor-btn" id="jumpToOverviewBtn" type="button">Squad overview</button>
             <button class="anchor-btn" id="jumpToSituationsBtn" type="button">Match situations</button>
             <button class="anchor-btn" id="jumpToAnalysisBtn" type="button">Current analysis</button>
             <button class="anchor-btn" id="jumpToRankingBtn" type="button">Best squad fits</button>
@@ -93,6 +94,16 @@
         </div>
       </section>
 
+      <section class="band squad-overview-band hidden-view" id="squadOverviewSection">
+        <div class="section-head">
+          <div>
+            <h2>Squad overview</h2>
+            <p>See your team's strengths and weaknesses across every match situation at a glance.</p>
+          </div>
+        </div>
+        <div id="squadOverviewContent" class="squad-overview-content"></div>
+      </section>
+
       <section class="page-grid" id="pageGrid">
         <div class="main-column">
           <section class="band" id="lensDirectorySection">
@@ -114,6 +125,7 @@
                 autocomplete="off"
               />
             </div>
+            <div id="positionFilters" class="position-filters"></div>
             <div id="lensGrid" class="lens-grid"></div>
           </section>
 

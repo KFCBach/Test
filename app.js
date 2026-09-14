@@ -150,6 +150,50 @@ const FALLBACK_LENS_CONFIG = JSON.parse(`{
         { "minimumStrongFits": 1, "reading": "Single-anchor structure is possible but fragile." },
         { "minimumStrongFits": 0, "reading": "Central load should be shared more than anchored." }
       ]
+    },
+    {
+      "id": "wing_play",
+      "label": "Wing Play",
+      "shortMeaning": "Can the player stretch the pitch wide, carry the ball at speed down the flank and deliver end product?",
+      "description": "High scores point to players who can receive wide, beat a full-back, carry the ball into advanced areas and deliver a cross or cut inside to shoot.",
+      "coachQuestions": ["Who can stretch the pitch from wide areas?", "Can the squad deliver consistent wide threat?"],
+      "core": { "Pace": 1.1, "Acceleration": 1.05, "Dribbling": 1.0, "Crossing": 0.95, "Agility": 0.9, "Technique": 0.85 },
+      "support": { "Off The Ball": 0.65, "Stamina": 0.6, "First Touch": 0.55, "Balance": 0.5, "Decisions": 0.45 },
+      "accent": { "Flair": 0.35, "Teamwork": 0.3, "Work Rate": 0.3, "Anticipation": 0.25 },
+      "gateAttributes": ["Pace", "Acceleration", "Dribbling", "Crossing"]
+    },
+    {
+      "id": "crosser_profile",
+      "label": "Crossing Specialist",
+      "shortMeaning": "Can the player deliver accurate crosses from wide or deep positions into the penalty area?",
+      "description": "High scores point to players who can deliver accurate, well-timed crosses from different angles and under pressure.",
+      "coachQuestions": ["Who can deliver dangerous crosses consistently?", "Does the squad have enough crossing quality from wide areas?"],
+      "core": { "Crossing": 1.15, "Technique": 1.0, "Vision": 0.95, "Passing": 0.9, "First Touch": 0.85, "Decisions": 0.85 },
+      "support": { "Pace": 0.6, "Dribbling": 0.55, "Teamwork": 0.5, "Composure": 0.45, "Anticipation": 0.45 },
+      "accent": { "Acceleration": 0.35, "Off The Ball": 0.3, "Balance": 0.3, "Stamina": 0.25 },
+      "gateAttributes": ["Crossing", "Technique", "Vision", "Passing"]
+    },
+    {
+      "id": "playmaker_profile",
+      "label": "Playmaker",
+      "shortMeaning": "Can the player control the tempo, find passes others cannot see and connect the team?",
+      "description": "High scores point to players who can dictate the rhythm, pick the right pass under pressure and make the team play through them.",
+      "coachQuestions": ["Do we have a player who can dictate the game?", "Can someone consistently find the pass that opens the defence?"],
+      "core": { "Vision": 1.15, "Passing": 1.1, "First Touch": 1.0, "Composure": 0.95, "Decisions": 0.95, "Technique": 0.9 },
+      "support": { "Teamwork": 0.65, "Flair": 0.6, "Anticipation": 0.55, "Balance": 0.5, "Concentration": 0.45 },
+      "accent": { "Dribbling": 0.35, "Off The Ball": 0.3, "Agility": 0.3, "Long Shots": 0.25 },
+      "gateAttributes": ["Vision", "Passing", "First Touch", "Composure", "Decisions"]
+    },
+    {
+      "id": "cut_inside",
+      "label": "Cut Inside Threat",
+      "shortMeaning": "Can the player receive wide, cut inside and create shots or through balls from half-spaces?",
+      "description": "High scores point to players who can start wide, drive inside past defenders and create dangerous shooting or passing angles.",
+      "coachQuestions": ["Who can cut inside and threaten the goal?", "Does the squad have inverted wingers who can shoot or create from half-spaces?"],
+      "core": { "Dribbling": 1.1, "Finishing": 1.0, "Acceleration": 0.95, "Agility": 0.95, "Technique": 0.9, "Composure": 0.85 },
+      "support": { "Decisions": 0.7, "Long Shots": 0.65, "First Touch": 0.6, "Flair": 0.55, "Off The Ball": 0.5 },
+      "accent": { "Balance": 0.35, "Vision": 0.3, "Passing": 0.3, "Pace": 0.25 },
+      "gateAttributes": ["Dribbling", "Finishing", "Acceleration", "Technique"]
     }
   ],
   "contextOnlyAttributes": ["Leadership", "Determination"],
@@ -303,6 +347,26 @@ const LENS_UI_META = {
     category: "Defending - Player roles",
     toneClass: "tone-role",
     summary: "Shows who can hold the middle together and give the team a real No. 6 profile."
+  },
+  wing_play: {
+    category: "Attacking - Wide play",
+    toneClass: "tone-amber",
+    summary: "Shows who can stretch the pitch, beat a full-back and deliver from wide areas."
+  },
+  crosser_profile: {
+    category: "Attacking - Wide play",
+    toneClass: "tone-gold",
+    summary: "Shows who can deliver dangerous crosses consistently from wide or deep positions."
+  },
+  playmaker_profile: {
+    category: "Attacking - Creative roles",
+    toneClass: "tone-violet",
+    summary: "Shows who can dictate tempo, find the decisive pass and make the team play through them."
+  },
+  cut_inside: {
+    category: "Attacking - Wide play",
+    toneClass: "tone-amber",
+    summary: "Shows who can start wide, cut inside and create shooting or passing chances from half-spaces."
   }
 };
 
@@ -334,6 +398,20 @@ const SITUATION_GROUPS = [
     helper: "Find players who can create danger through individual qualities or specialist attacking roles.",
     accentClass: "group-attacking-threat",
     lensIds: ["one_v_one_threat", "penalty_area_presence"]
+  },
+  {
+    id: "attacking-wide",
+    title: "Attacking - Wide play",
+    helper: "Test who can carry, cross or cut inside from wide positions.",
+    accentClass: "group-attacking-wide",
+    lensIds: ["wing_play", "crosser_profile", "cut_inside"]
+  },
+  {
+    id: "attacking-creative",
+    title: "Attacking - Creative roles",
+    helper: "Find players who can control the game through vision, passing and creativity.",
+    accentClass: "group-attacking-creative",
+    lensIds: ["playmaker_profile"]
   }
 ];
 
@@ -343,6 +421,7 @@ const state = {
   activeLensId: null,
   selectedPlayerName: null,
   query: "",
+  positionFilter: "all",
   dataSource: "No squad loaded",
   focusMode: false,
   hasChosenSituation: false
@@ -372,6 +451,10 @@ const els = {
   detailSection: document.getElementById("detailSection"),
   rankingSection: document.getElementById("rankingSection"),
   sideColumn: document.getElementById("sideColumn"),
+  squadOverviewSection: document.getElementById("squadOverviewSection"),
+  squadOverviewContent: document.getElementById("squadOverviewContent"),
+  positionFilters: document.getElementById("positionFilters"),
+  jumpToOverviewBtn: document.getElementById("jumpToOverviewBtn"),
   lensGrid: document.getElementById("lensGrid"),
   detailHeader: document.getElementById("detailHeader"),
   kpiGrid: document.getElementById("kpiGrid"),
@@ -440,6 +523,13 @@ function bindEvents() {
   });
   els.jumpToSituationsBtn?.addEventListener("click", () => {
     scrollToSection(els.lensDirectorySection);
+  });
+  els.jumpToOverviewBtn?.addEventListener("click", () => {
+    if (!state.players.length) {
+      scrollToSection(els.emptyStateSection);
+      return;
+    }
+    scrollToSection(els.squadOverviewSection);
   });
   els.jumpToAnalysisBtn?.addEventListener("click", () => {
     if (!state.players.length) {
@@ -600,6 +690,7 @@ function render() {
   els.exportBtn.disabled = !state.players.length;
   els.jumpToAnalysisBtn.disabled = !state.players.length;
   els.jumpToRankingBtn.disabled = !state.players.length;
+  els.jumpToOverviewBtn.disabled = !state.players.length;
   if (els.emptySampleBtn) {
     els.emptySampleBtn.disabled = false;
   }
@@ -609,6 +700,8 @@ function render() {
   }
 
   toggleFocusLayout();
+  renderSquadOverview();
+  renderPositionFilters();
   renderLensGrid();
   if (state.focusMode && state.players.length) {
     renderDetailHeader(lens, analysis);
@@ -634,6 +727,7 @@ function toggleFocusLayout() {
   els.pageGrid.classList.toggle("page-grid-focus", state.focusMode && hasPlayers);
   els.introOverviewSection.classList.toggle("hidden-view", state.focusMode && hasPlayers);
   els.emptyStateSection.classList.toggle("hidden-view", hasPlayers);
+  els.squadOverviewSection.classList.toggle("hidden-view", !hasPlayers);
   els.lensDirectorySection.classList.remove("hidden-view");
   els.detailSection.classList.toggle("hidden-view", !(state.focusMode && hasPlayers));
   els.rankingSection.classList.toggle("hidden-view", !(state.focusMode && hasPlayers));
@@ -807,7 +901,7 @@ function renderKpis(analysis) {
     {
       label: "Squad gap",
       value: formatScore(spread),
-      sub: spread > 0 ? "Shows how dependent this situation is on a few leading players." : "Shows how dependent this situation is on a few leading players."
+      sub: spread > 3.0 ? "Large gap — this situation depends heavily on a few leading players." : spread > 1.5 ? "Moderate gap — a clear upper tier exists but the squad still supports it." : "Small gap — fit is spread fairly evenly across the squad."
     }
   ];
 
@@ -832,7 +926,8 @@ function renderInsights(lens, analysis) {
 }
 
 function renderTopFits(lens, analysis) {
-  const topPlayers = analysis.ranked.slice(0, 5);
+  const filteredForTopFits = filterRankedPlayers(analysis.ranked);
+  const topPlayers = filteredForTopFits.slice(0, 5);
   if (!topPlayers.length) {
     els.topFitsSection.innerHTML = `
       <div class="section-head section-head-tight">
@@ -999,46 +1094,7 @@ function renderRankingTable(lens, analysis) {
   });
 }
 
-function renderAttributeStacks(lens, analysis) {
-  if (!els.attributeStacks) return;
-  const relevant = getRelevantAttributes(lens);
-  const groups = ["core", "support", "accent"];
-  const labels = { core: "Main requirements", support: "Supporting qualities", accent: "Context factors" };
-  const copy = {
-    core: "These attributes decide whether the player can handle this situation.",
-    support: "These attributes improve the player once the main requirements are in place.",
-    accent: "These attributes can matter, but they should not decide the whole evaluation alone."
-  };
 
-  els.attributeStacks.innerHTML = groups
-    .map((tier) => {
-      const tierAttributes = relevant.filter((item) => item.tier === tier);
-      if (!tierAttributes.length) return "";
-
-      return `
-        <section class="stack-block">
-          <div class="stack-title">${labels[tier]}</div>
-          <div class="stack-copy">${copy[tier]}</div>
-          <div class="attribute-list">
-            ${tierAttributes
-              .map((attribute) => {
-                const average = analysis.attributeAverages[attribute.name];
-                const topPlayer = analysis.attributeLeaders[attribute.name];
-                return `
-                  <div class="attribute-row">
-                    <div class="attribute-name">${escapeHtml(attribute.name)}</div>
-                    <div class="attribute-avg">Team avg ${formatScore(average)}</div>
-                    <div class="attribute-top">${topPlayer ? `${topPlayer.Name} ${formatAttributeValue(topPlayer[attribute.name])}` : "-"}</div>
-                  </div>
-                `;
-              })
-              .join("")}
-          </div>
-        </section>
-      `;
-    })
-    .join("");
-}
 
 function renderSelectedPlayer(lens, analysis) {
   const player = analysis.ranked.find((item) => item.Name === state.selectedPlayerName) || analysis.ranked[0];
@@ -1050,6 +1106,10 @@ function renderSelectedPlayer(lens, analysis) {
   state.selectedPlayerName = player.Name;
   highlightSelectedRow();
   els.selectedPlayerPanel.innerHTML = renderSelectedPlayerSummary(lens, player);
+
+  els.selectedPlayerPanel.querySelector("[data-delete-player]")?.addEventListener("click", () => {
+    deletePlayer(player.Name);
+  });
 }
 
 function renderSelectedPlayerSummary(lens, player) {
@@ -1061,6 +1121,8 @@ function renderSelectedPlayerSummary(lens, player) {
     .slice()
     .sort((left, right) => left.value - right.value)
     .slice(0, 3);
+
+  const radarSvg = renderPlayerRadar(player);
 
   return `
     <div class="selected-player-panel">
@@ -1087,6 +1149,11 @@ function renderSelectedPlayerSummary(lens, player) {
           ${renderLayerRow("Support", player.layerScores.support, "fill-support")}
           ${renderLayerRow("Context", player.layerScores.accent, "fill-accent")}
         </div>
+      </div>
+
+      <div class="selected-section">
+        <h4>All-lens profile</h4>
+        <div class="radar-container">${radarSvg}</div>
       </div>
 
       <div class="selected-section">
@@ -1120,6 +1187,10 @@ function renderSelectedPlayerSummary(lens, player) {
             .join("")}
         </div>
       </div>
+
+      <div class="selected-section selected-section-actions">
+        <button class="btn btn-danger-subtle" type="button" data-delete-player="${escapeHtml(player.Name)}">Remove from squad</button>
+      </div>
     </div>
   `;
 }
@@ -1128,6 +1199,189 @@ function highlightSelectedRow() {
   els.rankingTable.querySelectorAll("[data-player-row]").forEach((row) => {
     row.classList.toggle("selected", row.dataset.playerRow === state.selectedPlayerName);
   });
+}
+
+function renderSquadOverview() {
+  if (!state.players.length || !state.lensConfig) {
+    els.squadOverviewContent.innerHTML = "";
+    return;
+  }
+
+  const lensData = state.lensConfig.lenses.map((lens) => {
+    const analysis = analyzeLens(lens);
+    return {
+      id: lens.id,
+      label: lens.label,
+      teamAverage: analysis.teamAverage,
+      bestPlayer: analysis.ranked[0]?.Name || "-",
+      bestScore: analysis.ranked[0]?.lensScore || 0,
+      weakestPlayer: analysis.ranked[analysis.ranked.length - 1]?.Name || "-",
+      weakestScore: analysis.ranked[analysis.ranked.length - 1]?.lensScore || 0
+    };
+  }).sort((a, b) => b.teamAverage - a.teamAverage);
+
+  const maxScore = 20;
+
+  els.squadOverviewContent.innerHTML = `
+    <div class="overview-bar-chart">
+      ${lensData.map((item) => {
+        const pct = Math.max(0, Math.min(100, (item.teamAverage / maxScore) * 100));
+        const uiMeta = LENS_UI_META[item.id] || { toneClass: "tone-cyan" };
+        const barColor = getOverviewBarColor(item.teamAverage);
+        return `
+          <button class="overview-bar-row" type="button" data-overview-lens="${escapeHtml(item.id)}">
+            <div class="overview-bar-label">${escapeHtml(item.label)}</div>
+            <div class="overview-bar-track">
+              <div class="overview-bar-fill ${barColor}" style="width:${pct}%"></div>
+            </div>
+            <div class="overview-bar-value">${formatScore(item.teamAverage)}</div>
+            <div class="overview-bar-detail">
+              <span class="overview-bar-best">${escapeHtml(item.bestPlayer)} ${formatScore(item.bestScore)}</span>
+            </div>
+          </button>
+        `;
+      }).join("")}
+    </div>
+  `;
+
+  els.squadOverviewContent.querySelectorAll("[data-overview-lens]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.activeLensId = btn.dataset.overviewLens;
+      state.hasChosenSituation = true;
+      state.focusMode = true;
+      ensureSelectedPlayer();
+      render();
+      focusDetailView();
+    });
+  });
+}
+
+function getOverviewBarColor(avg) {
+  if (avg >= 14.5) return "bar-strong";
+  if (avg >= 13.0) return "bar-good";
+  if (avg >= 11.5) return "bar-working";
+  return "bar-risk";
+}
+
+function renderPositionFilters() {
+  if (!state.players.length) {
+    els.positionFilters.innerHTML = "";
+    return;
+  }
+
+  const positionKeys = new Set();
+  positionKeys.add("all");
+  for (const player of state.players) {
+    const raw = String(player.Position || "").toUpperCase();
+    if (raw.includes("D")) positionKeys.add("D");
+    if (raw.includes("WB")) positionKeys.add("WB");
+    if (raw.includes("DM")) positionKeys.add("DM");
+    if (raw.includes("M") && !raw.includes("AM") && !raw.includes("DM")) positionKeys.add("M");
+    if (raw.includes("AM")) positionKeys.add("AM");
+    if (raw.includes("ST")) positionKeys.add("ST");
+  }
+
+  const labels = { all: "All", D: "DEF", WB: "WB", DM: "DM", M: "MID", AM: "AM", ST: "ST" };
+  const orderedKeys = ["all", "D", "WB", "DM", "M", "AM", "ST"].filter((k) => positionKeys.has(k));
+
+  els.positionFilters.innerHTML = orderedKeys
+    .map((key) => {
+      const active = state.positionFilter === key ? "active" : "";
+      return `<button class="pos-filter-btn ${active}" type="button" data-pos-filter="${escapeHtml(key)}">${labels[key] || key}</button>`;
+    })
+    .join("");
+
+  els.positionFilters.querySelectorAll("[data-pos-filter]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.positionFilter = btn.dataset.posFilter;
+      ensureSelectedPlayer();
+      render();
+    });
+  });
+}
+
+function renderPlayerRadar(player) {
+  if (!state.lensConfig) return "";
+  const lenses = state.lensConfig.lenses;
+  const count = lenses.length;
+  if (count < 3) return "";
+
+  const cx = 140, cy = 140, maxR = 110;
+  const angleStep = (2 * Math.PI) / count;
+
+  const playerScores = lenses.map((lens) => {
+    const scoreData = scorePlayerForLens(player, lens);
+    return scoreData.lensScore;
+  });
+
+  const teamAverages = lenses.map((lens) => {
+    const analysis = analyzeLens(lens);
+    return analysis.teamAverage;
+  });
+
+  function polarToXY(index, value) {
+    const angle = index * angleStep - Math.PI / 2;
+    const r = (Math.min(value, 20) / 20) * maxR;
+    return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
+  }
+
+  const gridLines = [5, 10, 15, 20].map((level) => {
+    const points = [];
+    for (let i = 0; i < count; i++) {
+      const p = polarToXY(i, level);
+      points.push(`${p.x},${p.y}`);
+    }
+    return `<polygon points="${points.join(" ")}" class="radar-grid"/>`;
+  }).join("");
+
+  const axes = lenses.map((lens, i) => {
+    const p = polarToXY(i, 20);
+    return `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" class="radar-axis"/>`;
+  }).join("");
+
+  const teamPoints = teamAverages.map((val, i) => {
+    const p = polarToXY(i, val);
+    return `${p.x},${p.y}`;
+  }).join(" ");
+
+  const playerPoints = playerScores.map((val, i) => {
+    const p = polarToXY(i, val);
+    return `${p.x},${p.y}`;
+  }).join(" ");
+
+  const labels = lenses.map((lens, i) => {
+    const angle = i * angleStep - Math.PI / 2;
+    const labelR = maxR + 22;
+    const lx = cx + labelR * Math.cos(angle);
+    const ly = cy + labelR * Math.sin(angle);
+    let anchor = "middle";
+    if (Math.cos(angle) > 0.3) anchor = "start";
+    if (Math.cos(angle) < -0.3) anchor = "end";
+    const shortLabel = lens.label.length > 14 ? lens.label.substring(0, 12) + "…" : lens.label;
+    return `<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" class="radar-label">${escapeHtml(shortLabel)}</text>`;
+  }).join("");
+
+  return `
+    <svg viewBox="0 0 280 280" class="radar-svg">
+      ${gridLines}
+      ${axes}
+      <polygon points="${teamPoints}" class="radar-team-poly"/>
+      <polygon points="${playerPoints}" class="radar-player-poly"/>
+      ${playerScores.map((val, i) => {
+        const p = polarToXY(i, val);
+        return `<circle cx="${p.x}" cy="${p.y}" r="3" class="radar-player-dot"/>`;
+      }).join("")}
+      ${labels}
+    </svg>
+  `;
+}
+
+function deletePlayer(playerName) {
+  state.players = state.players.filter((p) => p.Name !== playerName);
+  savePlayers();
+  ensureSelectedPlayer();
+  render();
+  setStatus(`Removed ${playerName} from the squad.`, "good");
 }
 
 function analyzeLens(lens) {
@@ -1321,9 +1575,19 @@ function ensureSelectedPlayer() {
 }
 
 function filterRankedPlayers(players) {
-  if (!state.query) return players;
-  const query = state.query.toLowerCase();
-  return players.filter((player) => `${player.Name} ${player.Position || ""}`.toLowerCase().includes(query));
+  let filtered = players;
+  if (state.positionFilter && state.positionFilter !== "all") {
+    const posKey = state.positionFilter.toUpperCase();
+    filtered = filtered.filter((player) => {
+      const pos = String(player.Position || "").toUpperCase();
+      return pos.includes(posKey);
+    });
+  }
+  if (state.query) {
+    const query = state.query.toLowerCase();
+    filtered = filtered.filter((player) => `${player.Name} ${player.Position || ""}`.toLowerCase().includes(query));
+  }
+  return filtered;
 }
 
 function isEligibleForLens(player, lens) {

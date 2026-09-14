@@ -427,6 +427,155 @@
           "reading": "Central load should be shared more than anchored."
         }
       ]
+    },
+    {
+      "id": "wing_play",
+      "label": "Wing Play",
+      "shortMeaning": "Can the player stretch the pitch wide, carry the ball at speed down the flank and deliver end product?",
+      "description": "High scores point to players who can receive wide, beat a full-back, carry the ball into advanced areas and deliver a cross or cut inside to shoot. Lower scores suggest the wide areas may lack speed, directness or the ability to reach the byline consistently.",
+      "coachQuestions": [
+        "Who can stretch the pitch from wide areas?",
+        "Can the squad deliver consistent wide threat?"
+      ],
+      "core": {
+        "Pace": 1.1,
+        "Acceleration": 1.05,
+        "Dribbling": 1.0,
+        "Crossing": 0.95,
+        "Agility": 0.9,
+        "Technique": 0.85
+      },
+      "support": {
+        "Off The Ball": 0.65,
+        "Stamina": 0.6,
+        "First Touch": 0.55,
+        "Balance": 0.5,
+        "Decisions": 0.45
+      },
+      "accent": {
+        "Flair": 0.35,
+        "Teamwork": 0.3,
+        "Work Rate": 0.3,
+        "Anticipation": 0.25
+      },
+      "gateAttributes": [
+        "Pace",
+        "Acceleration",
+        "Dribbling",
+        "Crossing"
+      ]
+    },
+    {
+      "id": "crosser_profile",
+      "label": "Crossing Specialist",
+      "shortMeaning": "Can the player deliver accurate crosses from wide or deep positions into the penalty area?",
+      "description": "High scores point to players who can deliver accurate, well-timed crosses from different angles and under pressure. Lower scores suggest the squad may reach wide areas but lack the final delivery quality to create headed or volleyed chances.",
+      "coachQuestions": [
+        "Who can deliver dangerous crosses consistently?",
+        "Does the squad have enough crossing quality from wide areas?"
+      ],
+      "core": {
+        "Crossing": 1.15,
+        "Technique": 1.0,
+        "Vision": 0.95,
+        "Passing": 0.9,
+        "First Touch": 0.85,
+        "Decisions": 0.85
+      },
+      "support": {
+        "Pace": 0.6,
+        "Dribbling": 0.55,
+        "Teamwork": 0.5,
+        "Composure": 0.45,
+        "Anticipation": 0.45
+      },
+      "accent": {
+        "Acceleration": 0.35,
+        "Off The Ball": 0.3,
+        "Balance": 0.3,
+        "Stamina": 0.25
+      },
+      "gateAttributes": [
+        "Crossing",
+        "Technique",
+        "Vision",
+        "Passing"
+      ]
+    },
+    {
+      "id": "playmaker_profile",
+      "label": "Playmaker",
+      "shortMeaning": "Can the player control the tempo, find passes others cannot see and connect the team through the middle or half-spaces?",
+      "description": "High scores point to players who can dictate the rhythm, pick the right pass under pressure and make the team play through them. Lower scores suggest the squad may lack a true conductor who can set the pace, change the point of attack and unlock defences with a single pass.",
+      "coachQuestions": [
+        "Do we have a player who can dictate the game?",
+        "Can someone consistently find the pass that opens the defence?"
+      ],
+      "core": {
+        "Vision": 1.15,
+        "Passing": 1.1,
+        "First Touch": 1.0,
+        "Composure": 0.95,
+        "Decisions": 0.95,
+        "Technique": 0.9
+      },
+      "support": {
+        "Teamwork": 0.65,
+        "Flair": 0.6,
+        "Anticipation": 0.55,
+        "Balance": 0.5,
+        "Concentration": 0.45
+      },
+      "accent": {
+        "Dribbling": 0.35,
+        "Off The Ball": 0.3,
+        "Agility": 0.3,
+        "Long Shots": 0.25
+      },
+      "gateAttributes": [
+        "Vision",
+        "Passing",
+        "First Touch",
+        "Composure",
+        "Decisions"
+      ]
+    },
+    {
+      "id": "cut_inside",
+      "label": "Cut Inside Threat",
+      "shortMeaning": "Can the player receive wide, cut onto a stronger foot and create shots or through balls from inside positions?",
+      "description": "High scores point to players who can start wide, drive inside past defenders and create dangerous shooting or passing angles from half-spaces. Lower scores suggest the squad may have wide players who stay on the touchline rather than threatening the goal from inside positions.",
+      "coachQuestions": [
+        "Who can cut inside and threaten the goal?",
+        "Does the squad have inverted wingers who can shoot or create from half-spaces?"
+      ],
+      "core": {
+        "Dribbling": 1.1,
+        "Finishing": 1.0,
+        "Acceleration": 0.95,
+        "Agility": 0.95,
+        "Technique": 0.9,
+        "Composure": 0.85
+      },
+      "support": {
+        "Decisions": 0.7,
+        "Long Shots": 0.65,
+        "First Touch": 0.6,
+        "Flair": 0.55,
+        "Off The Ball": 0.5
+      },
+      "accent": {
+        "Balance": 0.35,
+        "Vision": 0.3,
+        "Passing": 0.3,
+        "Pace": 0.25
+      },
+      "gateAttributes": [
+        "Dribbling",
+        "Finishing",
+        "Acceleration",
+        "Technique"
+      ]
     }
   ],
   "contextOnlyAttributes": [
